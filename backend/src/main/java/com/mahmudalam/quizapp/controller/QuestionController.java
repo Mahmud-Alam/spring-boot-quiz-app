@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("question")
@@ -18,6 +19,11 @@ public class QuestionController {
     @GetMapping("allQuestions")
     public List<QuestionModel> getAllQuestions(){
         return questionService.getAllQuestions();
+    }
+
+    @GetMapping("{id}")
+    public Optional<QuestionModel> getQuestionById(@PathVariable Integer id){
+        return questionService.getQuestionById(id);
     }
 
     @GetMapping("category/{category}")

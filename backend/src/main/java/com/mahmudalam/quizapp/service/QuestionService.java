@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionService {
@@ -17,6 +18,10 @@ public class QuestionService {
         return questionDao.findAll();
     }
 
+    public Optional<QuestionModel> getQuestionById(Integer id) {
+        return questionDao.findById(id);
+    }
+    
     public List<QuestionModel> getQuestionsByCategory(String category) {
         return questionDao.findByCategory(category);
     }
@@ -25,4 +30,5 @@ public class QuestionService {
         questionDao.save(question);
         return "Success! - 200";
     }
+
 }
