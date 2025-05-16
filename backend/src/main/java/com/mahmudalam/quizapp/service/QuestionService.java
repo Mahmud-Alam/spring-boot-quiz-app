@@ -53,11 +53,76 @@ public class QuestionService {
     public ResponseEntity<String> createQuestion(QuestionModel question) {
         try {
             questionDao.save(question);
-            return new ResponseEntity<>("success",HttpStatus.CREATED);
+            return new ResponseEntity<>("Question created successfully!",HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("failed",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Question creation failed!",HttpStatus.BAD_REQUEST);
     }
 
+    public ResponseEntity<String> updateQuestion(Integer id, QuestionModel question) {
+        try {
+            Optional<QuestionModel> optionalQ = questionDao.findById(id);
+            if (optionalQ.isPresent()) {
+                QuestionModel existingQ = optionalQ.get();
+
+                existingQ.setCategory(question.getCategory());
+                existingQ.setDifficultyLevel(question.getDifficultyLevel());
+                existingQ.setQuestionTitle(question.getQuestionTitle());
+                existingQ.setOption1(question.getOption1());
+                existingQ.setOption2(question.getOption2());
+                existingQ.setOption3(question.getOption3());
+                existingQ.setOption4(question.getOption4());
+                existingQ.setAnswer(question.getAnswer());
+
+                questionDao.save(existingQ);
+                return new ResponseEntity<>("Question updated successfully!", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Question not found with ID: " + id, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<String> patchUpdateQuestion(Integer id, QuestionModel question) {
+        try {
+            Optional<QuestionModel> optionalQ = questionDao.findById(id);
+            if (optionalQ.isPresent()) {
+                QuestionModel existingQ = optionalQ.get();
+
+                if (question.getCategory() != null) existingQ.setCategory(question.getCategory());
+                if (question.getDifficultyLevel() != null) existingQ.setDifficultyLevel(question.getDifficultyLevel());
+                if (question.getQuestionTitle() != null) existingQ.setQuestionTitle(question.getQuestionTitle());
+                if (question.getOption1() != null) existingQ.setOption1(question.getOption1());
+                if (question.getOption2() != null) existingQ.setOption2(question.getOption2());
+                if (question.getOption3() != null) existingQ.setOption3(question.getOption3());
+                if (question.getOption4() != null) existingQ.setOption4(question.getOption4());
+                if (question.getAnswer() != null) existingQ.setAnswer(question.getAnswer());
+
+                questionDao.save(existingQ);
+                return new ResponseEntity<>("Question patch updated successfully!", HttpStatus.OK);
+            } else{
+                return new ResponseEntity<>("Question not found with ID: " + id, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<String> deleteQuestion(Integer id) {
+        try {
+            if (!questionDao.existsById(id)) {
+                return new ResponseEntity<>("Question not found with ID: " + id, HttpStatus.NOT_FOUND);
+            }
+            questionDao.deleteById(id);
+            return new ResponseEntity<>("Question deleted successfully!", HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

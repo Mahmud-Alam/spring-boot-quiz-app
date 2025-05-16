@@ -35,4 +35,19 @@ public class QuestionController {
     public ResponseEntity<String> createQuestion(@RequestBody QuestionModel question){
         return questionService.createQuestion(question);
     }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<String> updateQuestion(@PathVariable Integer id, @RequestBody QuestionModel question){
+        return questionService.updateQuestion(id, question);
+    }
+
+    @PatchMapping("patch/{id}")
+    public ResponseEntity<String> patchUpdateQuestion(@PathVariable Integer id, @RequestBody QuestionModel question){
+        return questionService.patchUpdateQuestion(id, question);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deleteQuestion(@PathVariable Integer id){
+        return questionService.deleteQuestion(id);
+    }
 }
