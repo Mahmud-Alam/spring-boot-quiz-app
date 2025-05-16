@@ -24,4 +24,9 @@ public class QuestionController {
     public List<QuestionModel> getQuestionsByCategory(@PathVariable String category){
         return questionService.getQuestionsByCategory(category);
     }
+
+    @PostMapping("create")
+    public String createQuestion(@RequestBody QuestionModel question){
+        return questionService.createQuestion(question);
+    }
 }
